@@ -26,7 +26,6 @@ public class Producto {
 		this.categoria = categoria;
 	}
 
-	// Getters y setters
 	public String getCodigo() {
 		return codigo;
 	}
@@ -67,7 +66,6 @@ public class Producto {
 		this.categoria = categoria;
 	}
 
-	// Método toString para representar el objeto como cadena de texto
 	@Override
 	public String toString() {
 		return "Producto{" + "codigo='" + codigo + '\'' + ", descripcion='" + descripcion + '\'' + ", precioUnitario="
