@@ -42,7 +42,7 @@ public class Main {
 				eliminarEfemeride();
 				break;
 			case 4:
-
+				modificarEfemeride();
 				break;
 			case 5:
 				System.out.println("Eligió la Opción 5, saliendo del programa...");
@@ -151,31 +151,96 @@ public class Main {
 			}
 		}
 	}
-	
+
 	private static void eliminarEfemeride() {
-	    if (efemerides.isEmpty()) {
-	        System.out.println("No se puede eliminar nada, no hay efemerides cargados");
-	    } else {
-	        System.out.print("Ingrese el codigo del efemeride que desea eliminar: ");
-	        String codigo = entrada.nextLine();
-	        Iterator<Efemeride> iterator = efemerides.iterator();
-	        boolean encontrado = false;
-	        while (iterator.hasNext()) {
-	            Efemeride efemeride = iterator.next();
-	            if (efemeride.getCodigo().equals(codigo)) {
-	                iterator.remove();
-	                encontrado = true;
-	                System.out.println("Efemeride eliminado correctamente");
-	                break; // Salir del bucle una vez que se elimina el efemeride
-	            }
-	        }
-	        if (!encontrado) {
-	            System.out.println("No se encuentra el efemeride con el codigo ingresado");
-	        }
-	    }
+		entrada.nextLine(); // Consumir la bsaura del buffer
+		if (efemerides.isEmpty()) {
+			System.out.println("No se puede eliminar nada, no hay efemerides cargados");
+		} else {
+			System.out.print("Ingrese el codigo del efemeride que desea eliminar: ");
+			String codigo = entrada.nextLine();
+			Iterator<Efemeride> iterator = efemerides.iterator();
+			boolean encontrado = false;
+			while (iterator.hasNext()) {
+				Efemeride efemeride = iterator.next();
+				if (efemeride.getCodigo().equals(codigo)) {
+					iterator.remove();
+					encontrado = true;
+					System.out.println("Efemeride eliminado correctamente");
+					break; // Salir del bucle una vez que se elimina el efemeride
+				}
+			}
+			if (!encontrado) {
+				System.out.println("No se encuentra el efemeride con el codigo ingresado");
+			}
+		}
 	}
+
 	private static void modificarEfemeride() {
-		
+		entrada.nextLine(); // Consumir la bsaura del buffer
+		if (efemerides.isEmpty()) {
+			System.out.println("No hay efemerides para modificar.");
+			return;
+		}
+
+		try {
+			System.out.print("Ingrese el código del efemeride que desea modificar: ");
+			String codigo = entrada.nextLine();
+			boolean encontrado = false;
+
+			for (Efemeride efemeride : efemerides) {
+				if (efemeride.getCodigo().equals(codigo)) {
+					encontrado = true;
+
+					System.out.println("Seleccione qué atributo desea modificar:");
+					System.out.println("1 - Mes");
+					System.out.println("2 - Día");
+					System.out.println("3 - Detalle");
+					System.out.println("4 - Cancelar");
+					System.out.print("Seleccione una opción: ");
+
+					int opcion = entrada.nextInt();
+
+					switch (opcion) {
+					case 1:
+						System.out.println("Ingrese el nuevo número de mes: ");
+						Mes nuevoMes = obtenerMes();
+						efemeride.setMes(nuevoMes);
+						System.out.println("Mes modificado exitosamente.");
+						break;
+					case 2:
+						System.out.println("Ingrese el nuevo día del mes: ");
+						Mes mes = efemeride.getMes();
+						Integer nuevoDia = validarDia(mes);
+						efemeride.setDia(nuevoDia);
+						System.out.println("Día modificado exitosamente.");
+						break;
+					case 3:
+						System.out.println("Ingrese el nuevo detalle: ");
+						String nuevoDetalle = entrada.nextLine();
+						efemeride.setDetalle(nuevoDetalle);
+						System.out.println("El detalle se ah modificado exitosamente.");
+						break;
+					case 4:
+						System.out.println("Operación cancelada.");
+						break;
+					default:
+						System.out.println("Opción no válida. Inténtelo de nuevo.");
+						break;
+					}
+					break; // Salir del bucle una vez que se encuentra la efemeride
+				}
+			}
+
+			if (!encontrado) {
+				System.out.println("No se encontró ningún efemeride con el código especificado.");
+			}
+		} catch (InputMismatchException e) {
+			System.out.println("Error: Por favor, ingrese un número entero válido.");
+			entrada.next(); // Limpiar el buffer de residuos
+		} catch (NumberFormatException e) {
+			System.out.println("Error: Ingrese un número válido.");
+		}
 	}
 
 	// Método para precargar la lista con efemérides
