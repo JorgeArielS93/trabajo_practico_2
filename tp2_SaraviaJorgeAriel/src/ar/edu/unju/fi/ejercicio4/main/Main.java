@@ -120,40 +120,75 @@ public class Main {
 	    boolean ingresoCorrecto;
 	    do {
 	        try {
-	            ingresoCorrecto = true; // Esta como verdadero por defecto
+	            ingresoCorrecto = true; // Establecer como verdadero por defecto
 	            System.out.print("Ingrese el nombre: ");
 	            String nombre = entrada.nextLine();
 	            System.out.print("Ingrese el apellido: ");
 	            String apellido = entrada.nextLine();
-	            System.out.println("Ingrese la fecha de nacimiento d/M/yyyy :");
-	            String fechaNacimientoStr = entrada.nextLine();
-	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-	            LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
+	            LocalDate fechaNacimiento;
+	            do {
+	                try {
+	                    System.out.println("Ingrese la fecha de nacimiento d/M/yyyy :");
+	                    String fechaNacimientoStr = entrada.nextLine();
+	                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+	                    fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
+	                    break; // Salir del bucle si la fecha se parsea correctamente
+	                } catch (DateTimeParseException e) {
+	                    System.out.println("Error: Formato de fecha incorrecto. Por favor, ingrese la fecha en el formato d/M/yyyy.");
+	                }
+	            } while (true); // Repetir hasta que la fecha se ingrese correctamente
+	            
+	            double estatura;
+	            do {
+	                try {
+	                    System.out.print("Ingrese la estatura (en metros): ");
+	                    estatura = entrada.nextDouble();
+	                    entrada.nextLine(); // Limpiar basura del buffer
+	                    if (estatura <= 0) {
+	                        throw new IllegalArgumentException("La estatura debe ser un número positivo.");
+	                    }
+	                    break; // Salir del bucle si la estatura es válida
+	                } catch (InputMismatchException e) {
+	                    System.out.println("Error: Entrada inválida. Por favor, asegúrese de ingresar un número para la estatura.");
+	                    entrada.nextLine(); // Limpiar basura del buffer
+	                } catch (IllegalArgumentException e) {
+	                    System.out.println(e.getMessage());
+	                }
+	            } while (true); // Repetir hasta que la estatura sea válida
+	            
+	            double peso;
+	            do {
+	                try {
+	                    System.out.print("Ingrese el peso (en kilogramos): ");
+	                    peso = entrada.nextDouble();
+	                    entrada.nextLine(); // Limpiar basura del buffer
+	                    if (peso <= 0) {
+	                        throw new IllegalArgumentException("El peso debe ser un número positivo.");
+	                    }
+	                    break; // Salir del bucle si el peso es válido
+	                } catch (InputMismatchException e) {
+	                    System.out.println("Error: Entrada inválida. Por favor, asegúrese de ingresar un número para el peso.");
+	                    entrada.nextLine(); // Limpiar basura del buffer
+	                } catch (IllegalArgumentException e) {
+	                    System.out.println(e.getMessage());
+	                }
+	            } while (true); // Repetir hasta que el peso sea válido
+	            
 	            System.out.print("Ingrese la nacionalidad: ");
 	            String nacionalidad = entrada.nextLine();
-	            System.out.print("Ingrese la estatura (en metros): ");
-	            double estatura = entrada.nextDouble();
-	            System.out.print("Ingrese el peso (en kilogramos): ");
-	            double peso = entrada.nextDouble();
-	            entrada.nextLine(); // Limpiar basura del buffer
 	            System.out.print("Seleccione una posición: \n");
 	            mostrarPosiciones();
 	            Posicion posicion = obtenerPosicion();
 	            Jugador jugador = new Jugador(nombre, apellido, fechaNacimiento, nacionalidad, estatura, peso, posicion);
 	            jugadores.add(jugador);
 	            System.out.println("¡Jugador creado exitosamente!");
-	        } catch (DateTimeParseException e) {
-	            ingresoCorrecto = false; // Establecer como falso si hay una excepción
-	            System.out.println("Error: Formato de fecha incorrecto. Por favor, ingrese la fecha en el formato d/M/yyyy.");
-	        } catch (InputMismatchException e) {
-	            ingresoCorrecto = false; 
-	            System.out.println("Error: Entrada inválida. Por favor, asegúrese de ingresar números para la estatura y el peso.");
 	        } catch (Exception e) {
-	            ingresoCorrecto = false; 
+	            ingresoCorrecto = false; // Establecer como falso si hay una excepción
 	            System.out.println("Error: Ocurrió un error inesperado. Por favor, inténtelo de nuevo.");
 	        }
 	    } while (!ingresoCorrecto); // Repetir hasta que el ingreso sea correcto
 	}
+
 
 
 
