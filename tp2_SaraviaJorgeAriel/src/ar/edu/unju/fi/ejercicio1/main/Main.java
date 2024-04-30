@@ -92,7 +92,6 @@ public class Main {
 	private static void modificarProducto() {
 		if (productos.isEmpty()) {
 			System.out.println("No hay productos para modificar.");
-			return;
 		}
 
 		System.out.println("Ingrese el código del producto que desea modificar:");
