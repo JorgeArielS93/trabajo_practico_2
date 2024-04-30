@@ -117,36 +117,44 @@ public class Main {
 
 	private static void altaJugador() {
 	    System.out.println("\nAlta de jugador:");
-	    try {
-	        System.out.print("Ingrese el nombre: ");
-	        String nombre = entrada.nextLine();
-	        System.out.print("Ingrese el apellido: ");
-	        String apellido = entrada.nextLine();
-	        System.out.println("Ingrese la fecha de nacimiento d/M/yyyy :");
-	        String fechaNacimientoStr = entrada.nextLine();
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-	        LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
-	        System.out.print("Ingrese la nacionalidad: ");
-	        String nacionalidad = entrada.nextLine();
-	        System.out.print("Ingrese la estatura (en metros): ");
-	        double estatura = entrada.nextDouble();
-	        System.out.print("Ingrese el peso (en kilogramos): ");
-	        double peso = entrada.nextDouble();
-	        entrada.nextLine(); // Limpiar basura del buffer
-	        System.out.print("Seleccione una posicion: \n");
-	        mostrarPosiciones();
-	        Posicion posicion= obtenerPosicion();
-	        Jugador jugador= new Jugador(nombre, apellido, fechaNacimiento, nacionalidad, estatura, peso, posicion);
-	        jugadores.add(jugador);
-	        System.out.println("Jugador creado exitosamente!!");
-	    } catch (DateTimeParseException e) {
-	        System.out.println("Error: Formato de fecha incorrecto. Por favor, ingrese la fecha en el formato d/M/yyyy.");
-	    } catch (InputMismatchException e) {
-	        System.out.println("Error: Entrada inválida. Por favor, asegúrese de ingresar números para la estatura y el peso.");
-	    } catch (Exception e) {
-	        System.out.println("Error: Ocurrió un error inesperado. Por favor, inténtelo de nuevo.");
-	    }
+	    boolean ingresoCorrecto;
+	    do {
+	        try {
+	            ingresoCorrecto = true; // Esta como verdadero por defecto
+	            System.out.print("Ingrese el nombre: ");
+	            String nombre = entrada.nextLine();
+	            System.out.print("Ingrese el apellido: ");
+	            String apellido = entrada.nextLine();
+	            System.out.println("Ingrese la fecha de nacimiento d/M/yyyy :");
+	            String fechaNacimientoStr = entrada.nextLine();
+	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+	            LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
+	            System.out.print("Ingrese la nacionalidad: ");
+	            String nacionalidad = entrada.nextLine();
+	            System.out.print("Ingrese la estatura (en metros): ");
+	            double estatura = entrada.nextDouble();
+	            System.out.print("Ingrese el peso (en kilogramos): ");
+	            double peso = entrada.nextDouble();
+	            entrada.nextLine(); // Limpiar basura del buffer
+	            System.out.print("Seleccione una posición: \n");
+	            mostrarPosiciones();
+	            Posicion posicion = obtenerPosicion();
+	            Jugador jugador = new Jugador(nombre, apellido, fechaNacimiento, nacionalidad, estatura, peso, posicion);
+	            jugadores.add(jugador);
+	            System.out.println("¡Jugador creado exitosamente!");
+	        } catch (DateTimeParseException e) {
+	            ingresoCorrecto = false; // Establecer como falso si hay una excepción
+	            System.out.println("Error: Formato de fecha incorrecto. Por favor, ingrese la fecha en el formato d/M/yyyy.");
+	        } catch (InputMismatchException e) {
+	            ingresoCorrecto = false; 
+	            System.out.println("Error: Entrada inválida. Por favor, asegúrese de ingresar números para la estatura y el peso.");
+	        } catch (Exception e) {
+	            ingresoCorrecto = false; 
+	            System.out.println("Error: Ocurrió un error inesperado. Por favor, inténtelo de nuevo.");
+	        }
+	    } while (!ingresoCorrecto); // Repetir hasta que el ingreso sea correcto
 	}
+
 
 
 	private static void mostrarMenu() {
