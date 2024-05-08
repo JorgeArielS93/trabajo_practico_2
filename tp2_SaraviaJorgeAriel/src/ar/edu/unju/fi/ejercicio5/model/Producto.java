@@ -76,7 +76,11 @@ public class Producto {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-
+	
+	public String mostrarProductosSeleccionados() {
+		return "\n\tCódigo: " + codigo + "\n\tDescripción: " + descripcion + "\n\tPrecio Unitario: "
+				+ precioUnitario +"$"+ "\n\tOrigen de Fabricación: " + origenFabricacion + "\n\tCategoría: " + categoria + "\n";
+	}
 	@Override
 	public String toString() {
 		return "\n\tCódigo: " + codigo + "\n\tDescripción: " + descripcion + "\n\tPrecio Unitario: "

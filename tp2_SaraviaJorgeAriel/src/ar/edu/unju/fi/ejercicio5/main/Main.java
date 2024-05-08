@@ -61,6 +61,7 @@ public class Main {
 	    while (!codigoProducto.equals("0")) {
 	        Producto productoSeleccionado = buscarProductoPorCodigo(codigoProducto);
 	        if (productoSeleccionado != null) {
+	        	productoSeleccionado.setEstado(false);
 	            productosComprados.add(productoSeleccionado);
 	            total += productoSeleccionado.getPrecioUnitario();
 	        } else {
@@ -72,7 +73,7 @@ public class Main {
 
 	    System.out.println("Productos seleccionados:");
 	    for (Producto producto : productosComprados) {
-	        System.out.println(producto);
+	        System.out.println(producto.mostrarProductosSeleccionados());
 	    }
 
 	    System.out.println("Total a pagar: $" + total);
@@ -123,15 +124,27 @@ public class Main {
 	}
 	private static String pedirTarjeta() {
 	    String numeroTarjeta;
+	    boolean soloNumeros;
 	    do {
+	        soloNumeros = true; // Suponemos que todos los caracteres son números
 	        System.out.print("Ingrese Numero de tarjeta:");
 	        numeroTarjeta = entrada.nextLine();
 	        if (numeroTarjeta.length() < 16) {
 	            System.out.println("El número de tarjeta debe tener al menos 16 caracteres. Intente de nuevo.");
+	            soloNumeros = false; // Establecemos a false para que vuelva a pedir el número
+	            continue; // Saltamos la validación si la longitud no es suficiente
 	        }
-	    } while (numeroTarjeta.length() < 16);
+	        for (char c : numeroTarjeta.toCharArray()) {
+	            if (!Character.isDigit(c)) {
+	                System.out.println("Ingrese solo números. Intente de nuevo.");
+	                soloNumeros = false; // No son solo números, debe ingresar de nuevo
+	                break; // Salimos del bucle para no seguir verificando
+	            }
+	        }
+	    } while (!soloNumeros);
 	    return numeroTarjeta;
 	}
+
 
 	private static void precargarProductos() {
 		listaProductos.add(new Producto("1", "Teléfono móvil", 299.99, Producto.OrigenFabricacion.CHINA,Producto.Categoria.TELEFONIA, true));
