@@ -5,6 +5,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -40,10 +41,20 @@ public class Main {
 					
 					break;
 				case 3:
+					Function<Producto, Producto> incrementarPrecio = p -> {
+					    double nuevoPrecio = p.getPrecioUnitario() + (p.getPrecioUnitario() * 0.20);
+					    nuevoPrecio = Math.round(nuevoPrecio * 100.0) / 100.0; // Redondear a dos decimales
+					    p.setPrecioUnitario(nuevoPrecio);
+					    return p;
+					};
+					List<Producto> productosIncrementados=listaProductos.stream().map(incrementarPrecio).collect(Collectors.toList());
+					productosIncrementados.forEach(mostrarProductos);
 
 					break;
 				case 4:
-
+					Predicate<Producto> filtroCatElectroHogar = p -> p.getCategoria().equals(Producto.Categoria.ELECTROHOGAR) && p.isEstado();
+					List<Producto> catHelectroHogar = listaProductos.stream().filter(filtroCatElectroHogar).collect(Collectors.toList());
+					catHelectroHogar.forEach(mostrarProductos);
 					break;
 				case 5:
 
