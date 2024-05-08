@@ -7,24 +7,35 @@ import java.time.format.DateTimeFormatter;
 import ar.edu.unju.fi.ejercicio5.interfaces.Pago;
 
 public class PagoEfectivo implements Pago {
-	double montoPagado;
-	LocalDate fechaPago;
+    double montoPagado;
+    LocalDate fechaPago; // Variable para almacenar la fecha de pago
 
-	@Override
-	public double realizarPago(double monto) {
-		return monto - monto * 0.10;
-	}
+    // Constructor que acepta la fecha de pago como parámetro
+    public PagoEfectivo(LocalDate fechaPago) {
+        this.fechaPago = fechaPago;
+    }
 
-	@Override
-	public void imprimirRecibo() {
-		// Definir el formato deseado como String
-		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yy");
+    @Override
+    public double realizarPago(double monto) {
+        return montoPagado =monto - monto * 0.10;
+    }
 
-		// Crear un objeto DecimalFormat con el formato deseado "String"
-		DecimalFormat formatoNum = new DecimalFormat("#,##0.00");
+    @Override
+    public void imprimirRecibo() {
+        // Verificar si la fecha de pago es nula
+        if (fechaPago == null) {
+            System.out.println("Fecha de pago no definida.");
+            return;
+        }
 
-		System.out.println("Fecha de pago: " + fechaPago.format(formato));
-		System.out.println("Monto pagado: " + formatoNum.format(montoPagado) + "$");
-	}
+        // Definir el formato deseado como String
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yy");
 
+        // Crear un objeto DecimalFormat con el formato deseado "String"
+        DecimalFormat formatoNum = new DecimalFormat("#,##0.00");
+
+        System.out.println("Fecha de pago: " + fechaPago.format(formato));
+        System.out.println("Monto pagado: " + formatoNum.format(montoPagado) + "$");
+    }
 }
+

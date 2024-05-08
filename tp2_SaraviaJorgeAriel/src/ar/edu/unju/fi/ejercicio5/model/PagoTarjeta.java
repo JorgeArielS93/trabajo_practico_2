@@ -29,4 +29,9 @@ public class PagoTarjeta implements Pago {
 		System.out.println("Monto pagado: "+ formatoNum.format(montoPagado) + "$");
 	}
 
+	// Constructor que acepta la fecha de pago como parámetro
+    public PagoTarjeta(LocalDate fechaPago) {
+        this.fechaPago = fechaPago;
+    }
+	
 }
