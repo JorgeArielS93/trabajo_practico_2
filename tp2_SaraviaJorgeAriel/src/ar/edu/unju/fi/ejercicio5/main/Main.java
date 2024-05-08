@@ -2,6 +2,7 @@ package ar.edu.unju.fi.ejercicio5.main;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,29 +16,32 @@ public class Main {
 	private static List<Producto> productosComprados = new ArrayList<>();
 
 	public static void main(String[] args) {
-		int opc = 0;
-		precargarProductos();
-		do {
-			mostrarMenu();
-			opc = entrada.nextInt();
-
-			switch (opc) {
-			case 1:
-				mostrarProductos();
-				break;
-			case 2:
-				realizarCompra();
-
-				break;
-			case 3:
-				System.out.println("Elijio Salir...");
-				break;
-			default:
-				System.out.println("Opción no válida. Intente de nuevo.");
-			}
-		} while (opc != 3);
-
+	    int opc = 0;
+	    precargarProductos();
+	    do {
+	        mostrarMenu();
+	        try {
+	            opc = entrada.nextInt();
+	            switch (opc) {
+	                case 1:
+	                    mostrarProductos();
+	                    break;
+	                case 2:
+	                    realizarCompra();
+	                    break;
+	                case 3:
+	                    System.out.println("Elijio Salir...");
+	                    break;
+	                default:
+	                    System.out.println("Opción no válida. Intente de nuevo.");
+	            }
+	        } catch (InputMismatchException e) {
+	            System.out.println("Debe ingresar un número como opción.");
+	            entrada.next(); // Limpiar el búfer de entrada
+	        }
+	    } while (opc != 3);
 	}
+
 
 	private static void mostrarProductos() {
 		System.out.println("Lista de productos:");
@@ -47,52 +51,59 @@ public class Main {
 	}
 
 	private static void realizarCompra() {
-        double total = 0;
+	    entrada.nextLine();
+	    double total = 0;
 
-        System.out.println("Seleccione los productos que desea comprar:");
-        mostrarProductos();
-        System.out.println("Ingrese el código del producto que desea comprar (0 para terminar):");
-        String codigoProducto = entrada.nextLine();
-        while (!codigoProducto.equals("0")) {
-            Producto productoSeleccionado = buscarProductoPorCodigo(codigoProducto);
-            if (productoSeleccionado != null) {
-                productosComprados.add(productoSeleccionado);
-                total += productoSeleccionado.getPrecioUnitario();
-            } else {
-                System.out.println("El código ingresado no corresponde a un producto válido.");
-            }
-            System.out.println("Ingrese el código del siguiente producto que desea comprar (0 para terminar):");
-            codigoProducto = entrada.nextLine(); // Leer el siguiente código de producto
-        }
+	    System.out.println("Seleccione los productos que desea comprar:");
+	    mostrarProductos();
+	    System.out.println("Ingrese el código del producto que desea comprar (0 para terminar):");
+	    String codigoProducto = entrada.nextLine();
+	    while (!codigoProducto.equals("0")) {
+	        Producto productoSeleccionado = buscarProductoPorCodigo(codigoProducto);
+	        if (productoSeleccionado != null) {
+	            productosComprados.add(productoSeleccionado);
+	            total += productoSeleccionado.getPrecioUnitario();
+	        } else {
+	            System.out.println("El código ingresado no corresponde a un producto válido.");
+	        }
+	        System.out.println("Ingrese el código del siguiente producto que desea comprar (0 para terminar):");
+	        codigoProducto = entrada.nextLine(); // Leer el siguiente código de producto
+	    }
 
-        System.out.println("Productos seleccionados:");
-        for (Producto producto : productosComprados) {
-            System.out.println(producto);
-        }
+	    System.out.println("Productos seleccionados:");
+	    for (Producto producto : productosComprados) {
+	        System.out.println(producto);
+	    }
 
-        System.out.println("Total a pagar: $" + total);
+	    System.out.println("Total a pagar: $" + total);
 
-        System.out.println("Seleccione el método de pago:");
-        System.out.println("1 - Pago en efectivo");
-        System.out.println("2 - Pago con tarjeta");
-        int metodoPago = entrada.nextInt();
-        entrada.nextLine(); // Consumir la línea en blanco
+	    System.out.println("Seleccione el método de pago:");
+	    System.out.println("1 - Pago en efectivo");
+	    System.out.println("2 - Pago con tarjeta");
+	    try {
+	        int metodoPago = entrada.nextInt();
+	        entrada.nextLine(); // Consumir la línea en blanco
 
-        switch (metodoPago) {
-        case 1:
-            PagoEfectivo pagoEfectivo = new PagoEfectivo(LocalDate.now()); // Pasar la fecha actual
-            pagoEfectivo.realizarPago(total);
-            pagoEfectivo.imprimirRecibo();
-            break;
-        case 2:
-            PagoTarjeta pagoTarjeta = new PagoTarjeta(LocalDate.now()); // Pasar la fecha actual
-            pagoTarjeta.realizarPago(total);
-            pagoTarjeta.imprimirRecibo();
-            break;
-            default:
-                System.out.println("Opción no válida.");
-        }
-    }
+	        switch (metodoPago) {
+	            case 1:
+	                PagoEfectivo pagoEfectivo = new PagoEfectivo(LocalDate.now()); // Pasar la fecha actual
+	                pagoEfectivo.realizarPago(total);
+	                pagoEfectivo.imprimirRecibo();
+	                break;
+	            case 2:
+	                PagoTarjeta pagoTarjeta = new PagoTarjeta(LocalDate.now()); // Pasar la fecha actual
+	                pagoTarjeta.setNmrTarjera(pedirTarjeta());
+	                pagoTarjeta.realizarPago(total);
+	                pagoTarjeta.imprimirRecibo();
+	                break;
+	            default:
+	                System.out.println("Opción no válida.");
+	        }
+	    } catch (InputMismatchException e) {
+	        System.out.println("Debe ingresar un número como opción.");
+	        entrada.next(); // Limpiar el búfer de entrada
+	    }
+	}
 
 	private static Producto buscarProductoPorCodigo(String codigo) {
 		for (Producto producto : listaProductos) {
@@ -109,6 +120,17 @@ public class Main {
 		System.out.println("2. – Realizar compra");
 		System.out.println("3. – Salir");
 		System.out.print("Seleccione una opción:");
+	}
+	private static String pedirTarjeta() {
+	    String numeroTarjeta;
+	    do {
+	        System.out.print("Ingrese Numero de tarjeta:");
+	        numeroTarjeta = entrada.nextLine();
+	        if (numeroTarjeta.length() < 16) {
+	            System.out.println("El número de tarjeta debe tener al menos 16 caracteres. Intente de nuevo.");
+	        }
+	    } while (numeroTarjeta.length() < 16);
+	    return numeroTarjeta;
 	}
 
 	private static void precargarProductos() {

@@ -17,10 +17,26 @@ public class PagoEfectivo implements Pago {
 
     @Override
     public double realizarPago(double monto) {
-        return montoPagado =monto - monto * 0.10;
+        return montoPagado = monto - monto * 0.10;
     }
 
-    @Override
+    public double getMontoPagado() {
+		return montoPagado;
+	}
+
+	public void setMontoPagado(double montoPagado) {
+		this.montoPagado = montoPagado;
+	}
+
+	public LocalDate getFechaPago() {
+		return fechaPago;
+	}
+
+	public void setFechaPago(LocalDate fechaPago) {
+		this.fechaPago = fechaPago;
+	}
+
+	@Override
     public void imprimirRecibo() {
         // Verificar si la fecha de pago es nula
         if (fechaPago == null) {

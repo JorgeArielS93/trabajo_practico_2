@@ -13,7 +13,7 @@ public class PagoTarjeta implements Pago {
 
 	@Override
 	public double realizarPago(double monto) {
-		return monto + monto * 0.15;
+		return montoPagado= monto + monto * 0.15;
 	}
 
 	@Override
@@ -33,5 +33,29 @@ public class PagoTarjeta implements Pago {
     public PagoTarjeta(LocalDate fechaPago) {
         this.fechaPago = fechaPago;
     }
+
+	public String getNmrTarjera() {
+		return nmrTarjera;
+	}
+
+	public void setNmrTarjera(String nmrTarjera) {
+		this.nmrTarjera = nmrTarjera;
+	}
+
+	public LocalDate getFechaPago() {
+		return fechaPago;
+	}
+
+	public void setFechaPago(LocalDate fechaPago) {
+		this.fechaPago = fechaPago;
+	}
+
+	public double getMontoPagado() {
+		return montoPagado;
+	}
+
+	public void setMontoPagado(double montoPagado) {
+		this.montoPagado = montoPagado;
+	}
 	
 }
