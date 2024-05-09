@@ -1,6 +1,7 @@
 package ar.edu.unju.fi.ejercicio7;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -57,13 +58,17 @@ public class Main {
 					catHelectroHogar.forEach(mostrarProductos);
 					break;
 				case 5:
-
+					List<Producto> listaOrdenada= listaProductos.stream().sorted(Comparator.comparing(Producto::getPrecioUnitario).reversed()).collect(Collectors.toList());
+					listaOrdenada.forEach(mostrarProductos);
 					break;
 				case 6:
-
+					 listaProductos.stream()
+				            .peek(producto -> producto.setDescripcion(producto.getDescripcion().toUpperCase())) // Modifica los nombres a mayúsculas
+				            .collect(Collectors.toList());
+					listaProductos.forEach(mostrarProductos);
 					break;
 				case 7:
-
+					System.out.println("Elijio Salir...");
 					break;
 
 				default:
